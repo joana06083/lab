@@ -12,12 +12,11 @@ $db = new mysqli($servername, $username, $password);
 	if ($db->connect_error){
     die("Connection failed: " . $db->connect_error);
   }
-  echo "Connected successfully";
+  // echo "Connected successfully<br/>";
 	
   //change Connected database
   mysqli_select_db($db , $dbname);
 
-  //針對某個數據庫查詢
 	mysqli_query($db ,"SET NAMES utf8");
 	// mysql_close($db);
 

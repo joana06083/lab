@@ -20,7 +20,10 @@
         $uid = $_SESSION["id"];
         $title = $_POST["title"];
         $content = $_POST["content"];
-        $sql = "INSERT INTO `message_board` (uid, title, content) VALUES ('$uid', '$title', '$content')";
+        $time=date('Y-m-d H:i:s',time());
+        $no=date('mdHis',time());
+        $sql = "INSERT INTO `message＿board` (no, title, content,time,id) VALUES ('$no', '$title', '$content','$time','$uid')";
+        echo $sql;
         global $db;
         $result = mysqli_query($db , $sql) or die('MySQL query error');
         echo "<script type='text/javascript'>";
@@ -32,9 +35,10 @@
     //update
     function update(){
         $id = $_GET["id"];
+        $no = $_GET["no"];
         $title = $_POST["title"];
         $content = $_POST["content"];
-        $sql = "UPDATE `message_board` SET title = '$title', content = '$content' WHERE id = $id";
+        $sql = "UPDATE `message＿board` SET title = '$title', content = '$content' WHERE id = $id and no = '$no'";
         global $db;
         $result = mysqli_query($db , $sql) or die('MySQL query error');
         echo "<script type='text/javascript'>";
@@ -46,7 +50,8 @@
     //delete
     function del(){
         $id = $_GET["id"];
-        $sql = "DELETE FROM `message_board` WHERE id = $id";
+        $no = $_GET["no"];
+        $sql = "DELETE FROM `message＿board` WHERE id = $id and no = '$no'";
         global $db;
         $result = mysqli_query($db , $sql) or die('MySQL query error');
         echo "<script type='text/javascript'>";

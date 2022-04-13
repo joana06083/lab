@@ -20,6 +20,7 @@
         global $db;
         $result = mysqli_query($db , $sql) or die('MySQL query error');
         $row = mysqli_fetch_array($result);
+        
         if($row==""){
             echo "<script type='text/javascript'>";
             echo "alert('帳密錯誤');";
@@ -27,7 +28,7 @@
             echo "</script>";
         }else{
             session_start();
-            $_SESSION["id"] = $row['account'];
+            $_SESSION["id"] = $row['id'];
             echo "<script type='text/javascript'>";
             echo "alert('登入成功');";
             echo "location.href='index.php';";
@@ -58,7 +59,7 @@
             $result = mysqli_query($db , $sql) or die('MySQL query error');
             $row = mysqli_fetch_array($result);
             session_start();
-            $_SESSION["id"] = $row["account"];
+            $_SESSION["id"] = $row["id"];
             echo "<script type='text/javascript'>";
             echo "alert('註冊成功');";
             echo "location.href='index.php';";
@@ -73,7 +74,7 @@
             session_unset();
             echo "<script type='text/javascript'>";
             echo "alert('登出成功');";
-            echo "location.href='index.php';";
+            echo "location.href='login.php';";
             echo "</script>";
         }
     }

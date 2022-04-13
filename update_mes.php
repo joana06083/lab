@@ -1,11 +1,11 @@
 <?php
 	include_once "db.php";
 	session_start();
-	$id = $_GET["id"];
-    $sql="SELECT * FROM `message_board` WHERE id = '$id'";
+	$uid = $_GET["id"];
+    $sql="SELECT * FROM `message＿board` WHERE id = '$uid' and no = '$no'";
 	$result = mysqli_query($con , $sql) or die('MySQL query error');
    	$row = mysqli_fetch_array($result);
-	if($_SESSION["id"]!=$row["uid"]){
+	if($_SESSION["id"]!=$row["id"]){
     	header("Location: login.php");
     }
 ?>
