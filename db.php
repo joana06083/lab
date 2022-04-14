@@ -1,23 +1,21 @@
 <?php
+$dbms='mysql';     //資料庫類型
+$servername='localhost'; //資料庫IP
+$dbname='message'; //資料庫
+$username='root';      //連接帳號
+$password='';          //密碼
+$dsn="$dbms:host=$servername;dbname=$dbname";
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "message"; 
+try {
+  // $db = new PDO($dsn, $username, $password); //初始化PDO物件
+  // $db = null;
+  //資料庫長連結，需要最後加上個參數：array(PDO::ATTR_PERSISTENT => true) 
+  $db = new PDO($dsn, $username, $password, array(PDO::ATTR_PERSISTENT => true));
+  echo "Connected successfully！ \n";
+  
+} catch (PDOException $e) {
+  die ("Error!: " . $e->getMessage() . "<br/>");
+}
 
-// Create connection
-$db = new mysqli($servername, $username, $password);
-
-// Check connection
-	if ($db->connect_error){
-    die("Connection failed: " . $db->connect_error);
-  }
-  // echo "Connected successfully<br/>";
-	
-  //change Connected database
-  mysqli_select_db($db , $dbname);
-
-	mysqli_query($db ,"SET NAMES utf8");
-	// mysql_close($db);
 
 ?>

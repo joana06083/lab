@@ -21,31 +21,35 @@
 
 <?php
     if(@$_POST["search"]!=""){
-        $sql = "SELECT * FROM `message＿board` WHERE id = {$_POST['search']}";
+        $sql = $db->prepare("SELECT * FROM `message＿board` WHERE id = {$_POST['search']}");
+        $sql->execute();
     }else{
-        $sql = "SELECT * FROM `message＿board`";
+        $sql = $db->prepare("SELECT * FROM `message＿board`");
+        $sql->execute();
     }
+
+    $row = $sql->fetchAll();
+    /* 获取结果集中所有剩余的行 */
+    // print("Fetch all of the remaining rows in the result set:\n");
+    // print_r($row);
     
-    $result = mysqli_query($db , $sql) or die('MySQL query error');
-    $row = mysqli_fetch_all($result); //PDOStatement::fetchAll 
-    //print_r($row);
-    foreach($row AS $arr){
+     foreach($row AS $arr){
 ?>
     <div class="card">
-        <h4 class="card-header">標題：<?php echo $arr[1];?>
-        <?php if(@$_SESSION["id"]===$arr[4]){?>
-            <a href="mes.php?method=del&id=<?php echo $arr[4]?>&no=<?php echo $arr[0]?>">刪除</a>
-            <a href="update_mes.php?id=<?php echo $arr[4]?>&no=<?php echo $arr[0]?>">編輯</a>
+        <h4 class="card-header">標題：<?php echo $arr['title'];?>
+        <?php if(@$_SESSION["id"]===$arr['id']){?>
+            <a href="mes.php?method=del&id=<?php echo $arr['id']?>&no=<?php echo $arr['no']?>">刪除</a>
+            <a href="update_mes.php?id=<?php echo $arr['id']?>&no=<?php echo $arr['no']?>">編輯</a>
         <?php }?>
         </h4>
         <div class="card-body">
-            <a class="card-title">作者：<?php echo $arr[4];?></a>
-            <p class="card-title">時間：<?php echo $arr[3];?></p>
+            <a class="card-title">作者：<?php echo $arr['id'];?></a>
+            <p class="card-title">時間：<?php echo $arr['time'];?></p>
             <p>留言內容：</p>
-            <?php echo $arr[2];?>
+            <?php echo $arr['content'];?>
             <hr/>
         </div>
     </div>
 <?php
-    }
+     }
 ?>
