@@ -20,14 +20,14 @@
 <?php }?>
 
 <?php
-    if($_POST["search"]!=""){
-        $sql = "SELECT * FROM `message＿board` WHERE id = '$_POST[search]' ";
+    if(@$_POST["search"]!=""){
+        $sql = "SELECT * FROM `message＿board` WHERE id = {$_POST['search']}";
     }else{
         $sql = "SELECT * FROM `message＿board`";
     }
     
     $result = mysqli_query($db , $sql) or die('MySQL query error');
-    $row = mysqli_fetch_all($result);
+    $row = mysqli_fetch_all($result); //PDOStatement::fetchAll 
     //print_r($row);
     foreach($row AS $arr){
 ?>

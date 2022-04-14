@@ -16,7 +16,7 @@
 
     //登入
     function login(){
-        $sql="SELECT * FROM `user` WHERE id = '$_POST[account]' && password = '$_POST[password]'";
+        $sql="SELECT * FROM `user` WHERE id = {$_POST['account']} && password = {$_POST['password']}";
         global $db;
         $result = mysqli_query($db , $sql) or die('MySQL query error');
         $row = mysqli_fetch_array($result);
@@ -38,7 +38,7 @@
 
     //註冊
     function signup(){
-        $sql="SELECT * FROM `user` WHERE id = '$_POST[account]'";
+        $sql="SELECT * FROM `user` WHERE id = {$_POST['account']}";
         global $db;
         $result = mysqli_query($db , $sql) or die('MySQL query error');
         $row = mysqli_fetch_array($result);   //資料表沒資料為空陣列
@@ -50,11 +50,11 @@
             echo "location.href='login.php';";
             echo "</script>";
         }else{
-            $sql="INSERT INTO `user` (id, password, name,sex) VALUES ('$_POST[account]','$_POST[password]','$_POST[name]','$_POST[sex]')";
+            $sql="INSERT INTO `user` (id, password, name,sex) VALUES ({$_POST['account']},{$_POST['password']},{$_POST['name']},{$_POST['sex']})";
             global $db;
             $result = mysqli_query($db , $sql) or die("MySQL query error");
     
-            $sql="SELECT * FROM `user` WHERE id = '$_POST[account]' && password = '$_POST[password]'";
+            $sql="SELECT * FROM `user` WHERE id = '$_POST[account]' && password = {$_POST['password']}";
             global $db;
             $result = mysqli_query($db , $sql) or die('MySQL query error');
             $row = mysqli_fetch_array($result);
