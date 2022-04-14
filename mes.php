@@ -38,7 +38,8 @@
         $no = $_GET["no"];
         $title = $_POST["title"];
         $content = $_POST["content"];
-        $sql = "UPDATE `message＿board` SET title = '$title', content = '$content' WHERE id = '$id' and no = '$no'";
+        $time = date('Y-m-d H:i:s',time());
+        $sql = "UPDATE `message＿board` SET title = '$title', content = '$content',time='$time' WHERE id = '$id' and no = '$no'";
         echo $sql;
         global $db;
         $result = mysqli_query($db , $sql) or die('MySQL query error');

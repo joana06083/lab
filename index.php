@@ -41,9 +41,8 @@
         <div class="card-body">
             <a class="card-title">作者：<?php echo $arr[4];?></a>
             <p class="card-title">時間：<?php echo $arr[3];?></p>
-            <p class="card-text">
-                <?php echo $arr[2];?>
-            </p>
+            <p>留言內容：</p>
+            <?php echo $arr[2];?>
             <hr/>
         </div>
     </div>
