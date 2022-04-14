@@ -2,8 +2,9 @@
 	include_once "db.php";
 	session_start();
 	$uid = $_GET["id"];
+	$no = $_GET["no"];
     $sql="SELECT * FROM `message＿board` WHERE id = '$uid' and no = '$no'";
-	$result = mysqli_query($con , $sql) or die('MySQL query error');
+	$result = mysqli_query($db , $sql) or die('MySQL query error');
    	$row = mysqli_fetch_array($result);
 	if($_SESSION["id"]!=$row["id"]){
     	header("Location: login.php");
@@ -18,6 +19,18 @@
     <title>修改留言</title>
 </head>
 <body>
-   
+	<h4>修改留言</h4>
+	<form role="form" action="mes.php?method=update&id=<?php echo $row["id"]?>&no=<?php echo $row["no"]?>" method="post">
+		<div class="form-group">
+			<label for="title">標題</label>
+			<input type="text" class="form-control" id="title" placeholder="title" name="title" value="<?php echo $row["title"]?>">
+		</div>
+		<div class="form-group">
+			<label for="content">文章內容</label>
+			<input type="text" class="form-control" id="content" placeholder="content" name="content" value="<?php echo $row["content"]?>">
+		</div>
+		<button type="submit" class="btn btn-primary">修改</button>
+	</form>
+
 </body>
 </html>

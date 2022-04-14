@@ -6,6 +6,12 @@
     <a>Hi!<?php echo $_SESSION["id"] ?></a>
     <a href="config.php?method=logout">登出</a>｜
     <a href="add_mes.php">新增留言</a>
+
+    <form action="index.php" method="POST">
+        <input type="text" class="form-control" id="search" placeholder="id search" name="search"/>
+        <button type="submit" class="btn btn-primary">查詢</button>
+    </form>
+
     <hr/>
 <?php }else{?>
     <a href="login.php">登入</a>｜
@@ -14,25 +20,29 @@
 <?php }?>
 
 <?php
-    $sql = "SELECT * FROM `message＿board`";
+    if($_POST["search"]!=""){
+        $sql = "SELECT * FROM `message＿board` WHERE id = '$_POST[search]' ";
+    }else{
+        $sql = "SELECT * FROM `message＿board`";
+    }
+    
     $result = mysqli_query($db , $sql) or die('MySQL query error');
     $row = mysqli_fetch_all($result);
-    print_r($row);
+    //print_r($row);
     foreach($row AS $arr){
-        echo "<br/>".$arr[0];
-        echo "<br/>".$arr[1];
 ?>
     <div class="card">
-        <h4 class="card-header">標題：<?php echo $row['title'];?>
-        <?php if(@$_SESSION["id"]===$row['id']){?>
-            <a href="mes.php?method=del&id=<?php echo $row['id']?>" class="btn btn-danger mybtn">刪除</a>
-            <a href="update_mes.php?id=<?php echo $row['id']?>" class="btn btn-primary mybtn">編輯</a>
+        <h4 class="card-header">標題：<?php echo $arr[1];?>
+        <?php if(@$_SESSION["id"]===$arr[4]){?>
+            <a href="mes.php?method=del&id=<?php echo $arr[4]?>&no=<?php echo $arr[0]?>">刪除</a>
+            <a href="update_mes.php?id=<?php echo $arr[4]?>&no=<?php echo $arr[0]?>">編輯</a>
         <?php }?>
         </h4>
         <div class="card-body">
-            <h5 class="card-title">作者：<?php echo $row['id'];?></h5>
+            <a class="card-title">作者：<?php echo $arr[4];?></a>
+            <p class="card-title">時間：<?php echo $arr[3];?></p>
             <p class="card-text">
-                <?php echo $row['content'];?>
+                <?php echo $arr[2];?>
             </p>
             <hr/>
         </div>

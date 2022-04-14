@@ -74,7 +74,7 @@
             session_unset();
             echo "<script type='text/javascript'>";
             echo "alert('登出成功');";
-            echo "location.href='login.php';";
+            echo "location.href='index.php';";
             echo "</script>";
         }
     }
