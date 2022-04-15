@@ -1,6 +1,8 @@
 <?php
 	include_once "db.php";
     session_start();
+    echo $_GET["method"];
+
 	switch ($_GET["method"]) {
 		case "add":
 			add();
@@ -17,51 +19,55 @@
 
     //add
     function add(){
-        $uid = $_SESSION["id"];
-        $title = $_POST["title"];
+        $uid = $_GET["uid"];
+        $loginid = $_GET["loginid"];
+        $artno = $_GET["artno"];
         $content = $_POST["content"];
         $time=date('Y-m-d H:i:s',time());
-        $no=date('YmdHis',time());
+        $msg_no=date('YmdHis',time());
         
         global $db;
-        $sql = $db->prepare("INSERT INTO `message＿board` (no, title, content,time,id) VALUES ('$no', '$title', '$content','$time','$uid')");
-        $sql->execute();
-
-        echo "<script type='text/javascript'>";
-        echo "alert('新增留言成功');";
-        echo "location.href='index.php';";
-        echo "</script>";
+        if($uid!=$loginid){
+            $sql = $db->prepare("INSERT INTO `message` (message_no, message_content,create_time,user_no,article_no) VALUES ('$msg_no', '$content','$time','$loginid','$artno')");
+            $sql->execute();
+            print_r($sql);
+         }else{
+            $sql = $db->prepare("INSERT INTO `message` (message_no, message_content,create_time,user_no,article_no) VALUES ('$msg_no', '$content','$time','$uid','$artno')");
+            $sql->execute();
+        }
+            echo "<script type='text/javascript'>";
+            echo "alert('新增留言成功');";
+            echo "location.href='art_index.php?uid=".$uid."&artno=".$artno."&loginid=".$loginid."'";
+            echo "</script>";
     }
 
     //update
     function update(){
-        $id = $_GET["id"];
-        $no = $_GET["no"];
-        $title = $_POST["title"];
-        $content = $_POST["content"];
-        $time = date('Y-m-d H:i:s',time()); 
+        // $uid = $_GET["uid"];
+        // $no = $_GET["no"];
+        // $title = $_POST["title"];
+        // $content = $_POST["content"];
 
-        global $db;
-        $sql = $db->prepare("UPDATE `message＿board` SET title = '$title', content = '$content',time='$time' WHERE id = '$id' and no = '$no'");
-        $sql->execute();
+        // global $db;
+        // $sql = $db->prepare("UPDATE `message` SET article_title = '$title', article_content = '$content' WHERE user_no = '$uid' and article_no = '$no'");
+        // $sql->execute();
 
-        echo "<script type='text/javascript'>";
-        echo "alert('編輯留言成功');";
-        echo "location.href='index.php';";
-        echo "</script>";
+        // echo "<script type='text/javascript'>";
+        // echo "alert('編輯留言成功');";
+        // echo "location.href='art_index.php';";
+        // echo "</script>";
     }
 
     //delete
     function del(){
-        $id = $_GET["id"];
-        $no = $_GET["no"];
+        // $uid = $_GET["uid"];
+        // $no = $_GET["no"];
 
-        global $db;
-        $sql = $db->prepare("DELETE FROM `message＿board` WHERE id = '$id' and no = '$no'");
-        $sql->execute();
-
-        echo "<script type='text/javascript'>";
-        echo "alert('刪除留言成功');";
-        echo "location.href='index.php';";
-        echo "</script>";
+        // global $db;
+        // $sql = $db->prepare("DELETE FROM `message` WHERE user_no = '$uid' and article_no = '$no'");
+        // $sql->execute();
+        // echo "<script type='text/javascript'>";
+        // echo "alert('刪除留言成功');";
+        // echo "location.href='art_index.php';";
+        // echo "</script>";
     }
