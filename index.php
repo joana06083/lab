@@ -29,8 +29,7 @@
     }
 
     $row = $sql->fetchAll();
-    /* 获取结果集中所有剩余的行 */
-    // print("Fetch all of the remaining rows in the result set:\n");
+    // print("\n");
     // print_r($row);
     
      foreach($row AS $arr){

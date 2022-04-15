@@ -3,9 +3,12 @@
 	session_start();
 	$uid = $_GET["id"];
 	$no = $_GET["no"];
-    $sql="SELECT * FROM `message＿board` WHERE id = '$uid' and no = '$no'";
-	$result = mysqli_query($db , $sql) or die('MySQL query error');
-   	$row = mysqli_fetch_array($result);
+
+	global $db;
+	$sql = $db->prepare("SELECT * FROM `message＿board` WHERE id = '$uid' and no = '$no'");
+	$sql->execute();
+	$row = $sql->fetch();
+
 	if($_SESSION["id"]!=$row["id"]){
     	header("Location: login.php");
     }

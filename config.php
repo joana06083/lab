@@ -16,10 +16,10 @@
 
     //登入
     function login(){
-        $sql="SELECT * FROM `user` WHERE id = {$_POST['account']} && password = {$_POST['password']}";
         global $db;
-        $result = mysqli_query($db , $sql) or die('MySQL query error');
-        $row = mysqli_fetch_array($result);
+        $sql = $db->prepare("SELECT * FROM `user` WHERE id = '{$_POST['account']}' && password = '{$_POST['password']}'");
+        $sql->execute();
+        $row = $sql->fetch();
         
         if($row==""){
             echo "<script type='text/javascript'>";
@@ -38,28 +38,27 @@
 
     //註冊
     function signup(){
-        $sql="SELECT * FROM `user` WHERE id = {$_POST['account']}";
         global $db;
-        $result = mysqli_query($db , $sql) or die('MySQL query error');
-        $row = mysqli_fetch_array($result);   //資料表沒資料為空陣列
+        $sql = $db->prepare("SELECT * FROM `user` WHERE id = '{$_POST['account']}'");
+        $sql->execute();
+        $row = $sql->fetch();
         
-        // if($row!="" ){  //空陣列時，皆會進入此判斷
         if(empty($row)==FALSE){
             echo "<script type='text/javascript'>";
             echo "alert('已經辦過帳號囉');";
             echo "location.href='login.php';";
             echo "</script>";
         }else{
-            $sql="INSERT INTO `user` (id, password, name,sex) VALUES ({$_POST['account']},{$_POST['password']},{$_POST['name']},{$_POST['sex']})";
             global $db;
-            $result = mysqli_query($db , $sql) or die("MySQL query error");
-    
-            $sql="SELECT * FROM `user` WHERE id = '$_POST[account]' && password = {$_POST['password']}";
-            global $db;
-            $result = mysqli_query($db , $sql) or die('MySQL query error');
-            $row = mysqli_fetch_array($result);
+            $sql = $db->prepare("INSERT INTO `user` (id, password, name,sex) VALUES ('{$_POST['account']}','{$_POST['password']}','{$_POST['name']}','{$_POST['sex']}')");
+            $sql->execute();
+            
+            $sql = $db->prepare("SELECT * FROM `user` WHERE id = '{$_POST['account']}' && password = '{$_POST['password']}'");
+            $sql->execute();
+            $row = $sql->fetch();
+
             session_start();
-            $_SESSION["id"] = $row["id"];
+            $_SESSION["id"] = $row['id'];
             echo "<script type='text/javascript'>";
             echo "alert('註冊成功');";
             echo "location.href='index.php';";

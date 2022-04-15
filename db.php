@@ -11,7 +11,7 @@ try {
   // $db = null;
   //資料庫長連結，需要最後加上個參數：array(PDO::ATTR_PERSISTENT => true) 
   $db = new PDO($dsn, $username, $password, array(PDO::ATTR_PERSISTENT => true));
-  echo "Connected successfully！ \n";
+  // echo "Connected successfully！ \n";
   
 } catch (PDOException $e) {
   die ("Error!: " . $e->getMessage() . "<br/>");
