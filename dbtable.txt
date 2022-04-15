@@ -1,0 +1,17 @@
+用戶表user
+CREATE TABLE user( user_no char(20) primary key, user_name char(20), password char(20),sex char(6));
+
+文章表 article
+CREATE TABLE article(article_no bigint(20) auto_increment primary key, article_title char(50), article_content text(500), create_time datetime, update_time datetime,user_no char(20));
+
+留言表 message
+CREATE TABLE message(message_no bigint(20) auto_increment primary key, message_content text(500), create_time datetime, update_time datetime,user_no char(20),article_no bigint(20));
+
+設置時間預設
+ALTER TABLE `article` CHANGE `update_time` `update_time` DATETIME on update CURRENT_TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE `message` CHANGE `update_time` `update_time` DATETIME on update CURRENT_TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;
+
+索引
+ALTER TABLE `article` ADD INDEX(`article_no`, `user_no`);
+ALTER TABLE `message` ADD INDEX(`message_no`, `user_no`, `article_no`);
+
