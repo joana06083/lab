@@ -37,14 +37,18 @@
     </div>
     </nav>
     <div class="container">
-        <form role="form" action="art.php?method=add" method="post">
+        <form role="form" action="art.php?method=add" enctype="multipart/form-data" method="post">
             <div class="mb-3">
                 <label for="exampleFormControlTextarea1" class="form-label">標題</label>
-                <textarea class="form-control" rows="3" id="title" placeholder="title" name="title"></textarea>
+                <textarea class="form-control" rows="3" id="title"  name="title"></textarea>
             </div>
             <div class="mb-3">
             <label for="content" class="form-label">內容</label>
                 <textarea class="form-control" rows="3" id="content" name="content"></textarea>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">上傳圖片</label>
+                <input type="file" id="profile_pic" name="profile_pic" accept=".jpg, .jpeg, .png">
             </div>
             <button type="submit" class="btn btn-primary">新增</button>
         </form>

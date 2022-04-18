@@ -44,6 +44,7 @@
     </nav>
     <!-- 文章內文 -->
     <div class="container">
+        <img src="<?php echo $row["imgurl"]?>" class="img-fluid" alt="<?php echo $row["imgurl"]?>">
 		<form role="form" action="art.php?method=update&uid=<?php echo $row["user_no"]?>&artno=<?php echo $row["article_no"]?>" method="post">
         <div class="mb-3">
             <label class="form-label">標題 :</label><?php echo $row["article_title"]?>
@@ -66,7 +67,6 @@
             <br>
                 <?php echo $row["article_content"]?>
             </div>
-
         </form>
     
 

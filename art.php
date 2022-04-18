@@ -24,8 +24,8 @@
         $artno=date('YmdHis',time());
         
         global $db;
-        $sql = $db->prepare("INSERT INTO `article` (article_no, article_title, article_content,create_time,user_no) 
-        VALUES ('$artno', '$title', '$content','$time','$uid')");
+        $sql = $db->prepare("INSERT INTO `article` (article_no, article_title, article_content,create_time,user_no,imgurl) 
+        VALUES ('$artno', '$title', '$content','$time','$uid','../lab/upload/cat.jpeg')");
         $sql->execute();
         print_r($sql);
 

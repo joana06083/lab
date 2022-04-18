@@ -15,3 +15,5 @@ ALTER TABLE `message` CHANGE `update_time` `update_time` DATETIME on upd
 ALTER TABLE `article` ADD INDEX(`article_no`, `user_no`);
 ALTER TABLE `message` ADD INDEX(`message_no`, `user_no`, `article_no`);
 
+新增欄位
+ALTER TABLE `article` ADD imgurl char(50);
