@@ -43,31 +43,41 @@
 
     //update
     function update(){
-        // $uid = $_GET["uid"];
-        // $no = $_GET["no"];
-        // $title = $_POST["title"];
-        // $content = $_POST["content"];
+        $uid = $_GET["uid"];
+        $loginid = $_GET["loginid"];
+        $artno = $_GET["artno"];
+        $msgno = $_GET["msgno"];
+        $content = $_POST["content"];
 
-        // global $db;
-        // $sql = $db->prepare("UPDATE `message` SET article_title = '$title', article_content = '$content' WHERE user_no = '$uid' and article_no = '$no'");
-        // $sql->execute();
+        global $db;
+        if($uid!=$loginid){
+            $sql = $db->prepare("UPDATE `message` SET  message_content = '$content' WHERE user_no = '$loginid' and article_no = '$artno' and message_no = '$msgno'");
+            $sql->execute();
+            
+         }else{
+            $sql = $db->prepare("UPDATE `message` SET  message_content = '$content' WHERE user_no = '$uid' and article_no = '$artno' and message_no = '$msgno'");
+            $sql->execute();
+        }
 
-        // echo "<script type='text/javascript'>";
-        // echo "alert('編輯留言成功');";
-        // echo "location.href='art_index.php';";
-        // echo "</script>";
+        echo "<script type='text/javascript'>";
+        echo "alert('編輯留言成功');";
+        echo "location.href='art_index.php?uid=".$uid."&artno=".$artno."&loginid=".$loginid."'";
+        echo "</script>";
     }
 
     //delete
     function del(){
-        // $uid = $_GET["uid"];
-        // $no = $_GET["no"];
+        $uid = $_GET["uid"];
+        $loginid = $_GET["loginid"];
+        $artno = $_GET["artno"];
+        $msgno = $_GET["msgno"];
 
-        // global $db;
-        // $sql = $db->prepare("DELETE FROM `message` WHERE user_no = '$uid' and article_no = '$no'");
-        // $sql->execute();
-        // echo "<script type='text/javascript'>";
-        // echo "alert('刪除留言成功');";
-        // echo "location.href='art_index.php';";
-        // echo "</script>";
+        global $db;
+        $sql = $db->prepare("DELETE FROM `message` WHERE user_no = '$loginid' and article_no = '$artno' and message_no = '$msgno'");
+        $sql->execute();
+        // print_r($sql);
+        echo "<script type='text/javascript'>";
+        echo "alert('刪除留言成功');";
+        // echo "location.href='art_index.php?uid=".$uid."&artno=".$artno."&loginid=".$loginid."'";
+        echo "</script>";
     }
