@@ -4,7 +4,10 @@
     $uid = $_GET["uid"];
     if(empty($_SESSION["user_id"])==false){
         $loginid = $_GET["loginid"];
+    }else{
+        $loginid = $_GET["uid"];
     }
+    
     $artno = $_GET["artno"];
     $sql = $db->prepare("SELECT * FROM `article` WHERE user_no = '$uid' AND article_no = '$artno'");
     $sql->execute();
@@ -32,7 +35,7 @@
                 <label>Hi!
                     <?php 
                         global $db;
-                        $usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '$uid'");
+                        $usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '$loginid'");
                         $usql->execute();
                         $urow = $usql->fetchColumn();
                         echo $urow;

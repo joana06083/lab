@@ -1,7 +1,7 @@
 <?php
     include_once "db.php";
     session_start();
-    if(empty($_SESSION["user_id"])==false){      
+        
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,18 +26,21 @@
                 <input class="form-control me-2" type="search" id="search" placeholder="search" name="search"/>
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
-            <label>Hi!
+            <?php if(empty($_SESSION["user_id"])==false){  ?>
+            <div>Hi!
                 <?php 
+                
                     global $db;
                     $sql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '{$_SESSION['user_id']}'");
                     $sql->execute();
                     $row = $sql->fetchColumn();
                     echo $row;
                 ?>
-            </label>
-            <a href="config.php?method=logout">登出</a>
+            </div>
+            <a class="nav-link" href="config.php?method=logout">登出</a>
             <?php }else{?>
-                <a href="signup.php">註冊</a>
+                <a class="nav-link" href="signup.php">註冊</a>
+                <a class="nav-link" href="login.php">登入</a>
             <?php }?>
         </div>
     </div>
