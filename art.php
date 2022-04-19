@@ -52,16 +52,22 @@
         $uid = $_SESSION["user_id"];
         $title = $_POST["title"];
         $content = $_POST["content"];
-        $time=date('Y-m-d H:i:s',time());
+        // $time=date('Y-m-d H:i:s',time());
         $artno=date('YmdHis',time());
 
         //定義變數，儲存檔案上傳路徑，之後將變數寫進資料庫相應欄位即可
         img();
-        $imgurl = "../lab/upload/" . $_FILES["profile_pic"]["name"];
+        if($_FILES["profile_pic"]["name"]!=""){
+            $imgurl = "../lab/upload/" . $_FILES["profile_pic"]["name"];
+        }else{
+            $imgurl=Null;
+        }
         
         global $db;
-        $sql = $db->prepare("INSERT INTO `article` (article_no, article_title, article_content,create_time,user_no,imgurl) 
-        VALUES ('$artno', '$title', '$content','$time','$uid','$imgurl')");
+        // $sql = $db->prepare("INSERT INTO `article` (article_no, article_title, article_content,create_time,user_no,imgurl) 
+        $sql = $db->prepare("INSERT INTO `article` (article_no, article_title, article_content,user_no,imgurl) 
+
+        VALUES ('$artno', '$title', '$content','$uid','$imgurl')");
         $sql->execute();
         print_r($sql);
         echo "快取檔案: " . $_FILES["profile_pic"]["tmp_name"] ;
