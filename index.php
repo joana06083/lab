@@ -28,12 +28,10 @@ session_start();
             <?php if (empty($_SESSION["user_id"]) == false) {?>
             <div>Hi!
 <?php
-$loginid = $_SESSION["user_id"];
+['user_id' => $loginid] = $_SESSION;
     global $db;
     $usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :loginid");
-    $usql->execute(array(
-        'loginid' => $loginid,
-    ));
+    $usql->execute(['loginid' => $loginid]);
     $urow = $usql->fetchColumn();
     echo $urow;
     ?>
@@ -62,9 +60,7 @@ if (@$_POST['search'] != "") {
     $sql = $db->prepare("SELECT a.*,user_name FROM `article` a
     lEFT JOIN `user` u ON a.user_no=u.user_no
     WHERE user_name LIKE :search OR article_title LIKE :search OR update_time LIKE :search");
-    $sql->execute(array(
-        'search' => $search,
-    ));
+    $sql->execute(['search' => $search]);
 } else {
     $sql = $db->prepare("SELECT * FROM `article`");
     $sql->execute();
@@ -87,9 +83,7 @@ foreach ($row as $arr) {
 $uid = $arr['user_no'];
     global $db;
     $authorsql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :uid");
-    $authorsql->execute(array(
-        'uid' => $uid,
-    ));
+    $authorsql->execute(['uid' => $uid]);
     $authorrow = $authorsql->fetchColumn();
     echo $authorrow;
     ?>
