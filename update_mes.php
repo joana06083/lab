@@ -7,8 +7,13 @@ $msgno = $_GET["msgno"];
 $loginid = $_GET["loginid"];
 
 global $db;
-$sql = $db->prepare("SELECT * FROM `message` WHERE user_no = '$loginid' and article_no = '$artno' and message_no = '$msgno'");
-$sql->execute();
+$sql = $db->prepare("SELECT * FROM `message`
+WHERE user_no = :loginid and article_no = :artno and message_no = :msgno");
+$sql->execute(array(
+    'loginid' => $loginid,
+    'artno' => $artno,
+    'msgno' => $msgno,
+));
 $row = $sql->fetch();
 
 if ($_SESSION["user_id"] != $loginid) {
@@ -34,10 +39,12 @@ if ($_SESSION["user_id"] != $loginid) {
                     </li>
                 </ul>
                 <label>Hi!
-                    <?php
+<?php
 global $db;
-$usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '$loginid'");
-$usql->execute();
+$usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :loginid");
+$usql->execute(array(
+    'loginid' => $loginid,
+));
 $urow = $usql->fetchColumn();
 echo $urow;
 ?>
@@ -49,21 +56,19 @@ echo $urow;
     <div class="container">
 		<form role="form" action="mes.php?method=update&uid=<?php echo $uid ?>&loginid=<?php echo $loginid ?>&artno=<?php echo $row["article_no"] ?>&msgno=<?php echo $row["message_no"] ?>" method="post">
         	<div class="mb-3">
-			<?php
-// echo "uid=".$uid;
-// echo "loginid=".$loginid;
-// echo "article_no=".$row["article_no"];
-// echo "message_no=".$row["message_no"];
-?>
 				<a>建立時間：<?php echo $row['create_time']; ?></a>
 				<a>最後修改時間：<?php echo $row['update_time']; ?></a>
 				<a>作者：
-					<?php
+<?php
+$mesuid = $row['user_no'];
 global $db;
-$usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '{$row['user_no']}'");
-$usql->execute();
-$urow = $usql->fetchColumn();
-echo $urow;
+$authorsql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :mesuid");
+$authorsql->execute(
+    array(
+        'mesuid' => $mesuid,
+    ));
+$authorrow = $authorsql->fetchColumn();
+echo $authorrow;
 ?>
 				</a>
 			</div>

@@ -1,7 +1,6 @@
 <?php
-    include_once "db.php";
-    session_start();
-        
+include_once "db.php";
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,24 +20,26 @@
                 <a class="nav-link active" href="index.php" style="color:blue;">Home</a>
                 </li>
             </ul>
-            
-            <form class="d-flex" action="index.php" method="POST">        
+
+            <form class="d-flex" action="index.php" method="POST">
                 <input class="form-control me-2" type="search" id="search" placeholder="search" name="search"/>
                 <button type="submit" class="btn btn-primary">Search</button>
             </form>
-            <?php if(empty($_SESSION["user_id"])==false){  ?>
+            <?php if (empty($_SESSION["user_id"]) == false) {?>
             <div>Hi!
-                <?php 
-                
-                    global $db;
-                    $sql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '{$_SESSION['user_id']}'");
-                    $sql->execute();
-                    $row = $sql->fetchColumn();
-                    echo $row;
-                ?>
+<?php
+$loginid = $_SESSION["user_id"];
+    global $db;
+    $usql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :loginid");
+    $usql->execute(array(
+        'loginid' => $loginid,
+    ));
+    $urow = $usql->fetchColumn();
+    echo $urow;
+    ?>
             </div>
             <a class="nav-link" href="config.php?method=logout">登出</a>
-            <?php }else{?>
+            <?php } else {?>
                 <a class="nav-link" href="signup.php">註冊</a>
                 <a class="nav-link" href="login.php">登入</a>
             <?php }?>
@@ -51,45 +52,54 @@
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="add_art.php">新增文章</a>
             </li>
-            
-        </ul>   
 
-    <?php
-        if(@$_POST['search']!=""){
-            $sql = $db->prepare("SELECT a.*,user_name FROM `article` a lEFT JOIN `user` u ON a.user_no=u.user_no WHERE user_name LIKE '%{$_POST['search']}%' OR article_title LIKE '%{$_POST['search']}%' OR update_time LIKE '%{$_POST['search']}%'");   
-            $sql->execute();
-        }else{
-            $sql = $db->prepare("SELECT * FROM `article`");
-            $sql->execute();
-        }
-        $row = $sql->fetchAll();
-        
-        foreach($row AS $arr){
+        </ul>
+
+<?php
+
+if (@$_POST['search'] != "") {
+    $search = '%' . $_POST['search'] . '%';
+    $sql = $db->prepare("SELECT a.*,user_name FROM `article` a
+    lEFT JOIN `user` u ON a.user_no=u.user_no
+    WHERE user_name LIKE :search OR article_title LIKE :search OR update_time LIKE :search");
+    $sql->execute(array(
+        'search' => $search,
+    ));
+} else {
+    $sql = $db->prepare("SELECT * FROM `article`");
+    $sql->execute();
+}
+$row = $sql->fetchAll();
+
+foreach ($row as $arr) {
     ?>
     <div>
-        <?php if(empty($_SESSION["user_id"])==false){?>
-            <a href="art_index.php?uid=<?php echo $arr['user_no']?>&artno=<?php echo $arr["article_no"]?>&loginid=<?php echo $_SESSION["user_id"]?>">
-        <?php  }else{ ?>
-            <a href="art_index.php?uid=<?php echo $arr['user_no']?>&artno=<?php echo $arr["article_no"]?>">
+        <?php if (empty($_SESSION["user_id"]) == false) {?>
+            <a href="art_index.php?uid=<?php echo $arr['user_no'] ?>&artno=<?php echo $arr["article_no"] ?>&loginid=<?php echo $_SESSION["user_id"] ?>">
+        <?php } else {?>
+            <a href="art_index.php?uid=<?php echo $arr['user_no'] ?>&artno=<?php echo $arr["article_no"] ?>">
         <?php }?>
             文章標題：
-            <?php echo $arr['article_title'];?>
+            <?php echo $arr['article_title']; ?>
         </a>
         <a>作者：
-            <?php 
-                global $db;
-                $sql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = '{$arr['user_no']}'");
-                $sql->execute();
-                $row = $sql->fetchColumn();
-                echo $row;
-            ?>
+<?php
+$uid = $arr['user_no'];
+    global $db;
+    $authorsql = $db->prepare("SELECT user_name FROM `user` WHERE user_no = :uid");
+    $authorsql->execute(array(
+        'uid' => $uid,
+    ));
+    $authorrow = $authorsql->fetchColumn();
+    echo $authorrow;
+    ?>
         </a>
-        <a>最後修改時間：<?php echo $arr['update_time'];?></a>
-        <?php if(@$_SESSION["user_id"]===$arr['user_no']){?>
-            <a href="update_art.php?uid=<?php echo $arr['user_no']?>&artno=<?php echo $arr["article_no"]?>">編輯</a>
-            <a href="art.php?method=del&uid=<?php echo $arr['user_no']?>&artno=<?php echo $arr["article_no"]?>">刪除</a>
+        <a>最後修改時間：<?php echo $arr['update_time']; ?></a>
+        <?php if (@$_SESSION["user_id"] === $arr['user_no']) {?>
+            <a href="update_art.php?uid=<?php echo $arr['user_no'] ?>&artno=<?php echo $arr["article_no"] ?>">編輯</a>
+            <a href="art.php?method=del&uid=<?php echo $arr['user_no'] ?>&artno=<?php echo $arr["article_no"] ?>">刪除</a>
         <?php }?>
-        
+
         <hr/>
     </div>
     <?php }?>
